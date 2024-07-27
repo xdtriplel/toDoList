@@ -15,6 +15,11 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+
+
+/* ToDoList component */
 
 type ToDoItem = {
     id: number;
@@ -60,4 +65,18 @@ const Todolist: React.FC<TodoListProps> = (props) => {
 };
 
 
-export {Todolist}
+/* Adding a new item component */
+
+const AddingForm = () => {
+  return (
+    <>
+      <form id='addATask'>
+        <TextField className="textfield" required id="titleField" label="Task title" variant="filled" />
+        <TextField className="textfield" id="descriptionField" label="Task description" variant="filled" />
+        <Button variant="outlined" id="submitButton">Add task</Button>
+      </form>
+    </>
+  )
+}
+
+export {Todolist , AddingForm}

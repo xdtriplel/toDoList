@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Todolist }  from "./components";
+import { Todolist, AddingForm }  from "./components";
 
 function App() {
   const toDoThings: {id: number, title:string, description: string}[] = [
@@ -11,9 +11,16 @@ function App() {
   ];
 
   return (
-    <div id="todolist">
-    <Todolist things={toDoThings}/>
-    </div>
+    <>
+      <header>
+        <h1>To Do List</h1>
+      </header>
+      <AddingForm/>
+
+      <div id="todolist">
+        <Todolist things={toDoThings}/>
+      </div>
+    </>
   )
 }
 
