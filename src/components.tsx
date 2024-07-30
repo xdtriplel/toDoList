@@ -54,6 +54,7 @@ const Todolist: React.FC<TodoListProps> = (props) => {
               >
 
               <ListItemText
+                    key={thing.id}
                     primary={thing.title}
                     secondary={secondary ? thing.description : null}
                   />
@@ -67,13 +68,27 @@ const Todolist: React.FC<TodoListProps> = (props) => {
 
 /* Adding a new item component */
 
-const AddingForm = () => {
+type AddingFormProps = {
+  onAddTask: (title: string, description: string) => void;
+};
+
+const AddingForm: React.FC<AddingFormProps> = ({ onAddTask }) => {
+  const [title, setTitle] = React.useState('');
+  const [description, setDescription] = React.useState('');
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    onAddTask(title, description);
+    setTitle('');
+    setDescription('');
+  };
+
   return (
     <>
-      <form id='addATask'>
-        <TextField className="textfield" required id="titleField" label="Task title" variant="filled" />
-        <TextField className="textfield" id="descriptionField" label="Task description" variant="filled" />
-        <Button variant="outlined" id="submitButton">Add task</Button>
+      <form id='addATask' onSubmit={handleSubmit}>
+        <TextField className="textfield" required id="titleField" label="Task title" variant="filled" value={title} onChange={(e) => setTitle(e.target.value)} />
+        <TextField className="textfield" id="descriptionField" label="Task description" variant="filled" value={description} onChange={(e) => setDescription(e.target.value)} />
+        <Button variant="outlined" id="submitButton" type="submit">Add task</Button>
       </form>
     </>
   )
