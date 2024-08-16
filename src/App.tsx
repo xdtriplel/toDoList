@@ -4,16 +4,7 @@ import Todolist from "./components/ToDoList";
 import AddingForm from "./components/AddingForm";
 import { v4 as uuidv4 } from "uuid";
 import { TodoItem, Todoes } from "./types/todoes";
-
-const todoes: Todoes = [
-  { id: "1", title: "Wake up", description: "wake up to reality" },
-  {
-    id: "2",
-    title: "Brush the teeth",
-    description: "Your teeth are so dirty, you shoulda clean it up",
-  },
-  { id: "3", title: "Make a breakfast", description: "Cook some dish" },
-];
+import todoes from "./constants/todoes";
 
 function App() {
   const [tasks, setTasks] = useState<Todoes>(todoes);
@@ -28,6 +19,16 @@ function App() {
     setTasks((prevState) => [...prevState, newItem]);
   };
 
+  const handleDeleteTask = (idNumber: string) => {
+    setTasks((prevState) => [
+      ...prevState.slice(
+        0,
+        prevState.findIndex((p) => p.id == idNumber),
+      ),
+      ...prevState.slice(prevState.findIndex((p) => p.id == idNumber) + 1),
+    ]);
+  };
+
   return (
     <>
       <header className="header">
@@ -35,7 +36,7 @@ function App() {
       </header>
       <AddingForm onAddTask={handleAddTask} />
 
-      <Todolist things={tasks} />
+      <Todolist things={tasks} onDeleteTask={handleDeleteTask} />
     </>
   );
 }

@@ -29,3 +29,26 @@ header {
   width: 40%;
   height: 50px;
 }
+
+.todoList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+ul {
+  display: flex;
+  justify-content: center;
+}
+
+.taskCompleted {
+  border: 3px outset green;
+  border-radius: 10px;
+  transition: 0.5s;
+}
+
+.taskUncompleted {
+  border: 3px outset white;
+  border-radius: 10px;
+  transition: 0.5s;
+}
