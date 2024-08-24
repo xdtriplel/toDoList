@@ -10,6 +10,7 @@ import { TodoItem } from "../types/todoes";
 import completedTodoes from "../constants/completedTodoes";
 import Checkbox from "@mui/material/Checkbox";
 import "../App.css";
+import styles from "../css/ToDoList.module.css";
 
 type TodoListProps = {
   things: Todoes;
@@ -38,11 +39,11 @@ const Todolist: FC<TodoListProps> = ({ things, onDeleteTask }) => {
   };
 
   return (
-    <List className="todoList">
+    <List className={styles.todoList}>
       {things.map((thing) => (
         <ListItem
           className={
-            completedTasks.includes(thing) ? "taskCompleted" : "taskUncompleted"
+            [completedTasks.includes(thing) ? styles.taskCompleted : styles.taskUncompleted, styles.ul].join(" ")
           }
           secondaryAction={
             <IconButton edge="end" aria-label="delete">
