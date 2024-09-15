@@ -2,12 +2,18 @@ import { FC, useState } from "react";
 import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { Todoes } from "../types/todoes";
-import styles from "../css/AddingForm.module.css";
-import "../App.css";
+import { v4 as uuidv4 } from "uuid";
+import { Todoes } from "../../types/todoes";
+import styles from "./AddingForm.module.css";
+import "../../App.css";
 
 type AddingFormProps = {
-  onAddTask: (title: string, description: string) => void;
+  onAddTask: (
+    id: string,
+    title: string,
+    description: string,
+    completed: boolean,
+  ) => void;
 };
 
 const AddingForm: FC<AddingFormProps> = ({ onAddTask }) => {
@@ -16,7 +22,7 @@ const AddingForm: FC<AddingFormProps> = ({ onAddTask }) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onAddTask(title, description);
+    onAddTask(uuidv4(), title, description, false);
     setTitle("");
     setDescription("");
   };
