@@ -26,7 +26,7 @@ function App() {
     setTasks((prevState) => [...prevState, newItem]);
   };
 
-  const handleUpdateThings = (updatedThings: Todoes) => {
+  const handleUpdateTasks = (updatedThings: Todoes) => {
     setTasks(updatedThings);
   };
 
@@ -61,7 +61,7 @@ function App() {
       <Todolist
         things={tasks}
         onAddTask={handleAddTask}
-        onUpdateThings={handleUpdateThings}
+        onUpdateTasks={handleUpdateTasks}
       />
     </>
   );

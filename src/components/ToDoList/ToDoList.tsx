@@ -21,10 +21,10 @@ type TodoListProps = {
     description: string,
     completed: boolean,
   ) => void;
-  onUpdateThings: (things: Todoes) => void;
+  onUpdateTasks: (things: Todoes) => void;
 };
 
-const Todolist: FC<TodoListProps> = ({ things, onAddTask, onUpdateThings }) => {
+const Todolist: FC<TodoListProps> = ({ things, onAddTask, onUpdateTasks }) => {
   const [todoItems, setTodoItems] = useState<Todoes>(things);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const Todolist: FC<TodoListProps> = ({ things, onAddTask, onUpdateThings }) => {
     setTimeout(() => {
       setTodoItems(updatedTodoes);
 
-      onUpdateThings(updatedTodoes);
+      onUpdateTasks(updatedTodoes);
 
       setFadeOutId(null);
     }, 200);
@@ -56,7 +56,7 @@ const Todolist: FC<TodoListProps> = ({ things, onAddTask, onUpdateThings }) => {
 
     setTodoItems(updatedTodoes);
 
-    onUpdateThings(updatedTodoes);
+    onUpdateTasks(updatedTodoes);
   };
 
   return (
