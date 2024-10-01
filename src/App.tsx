@@ -26,33 +26,20 @@ function App() {
     setTasks((prevState) => [...prevState, newItem]);
   };
 
-  const handleDeleteTask = (idNumber: string) => {
-    setTasks((prevState) => [
-      ...prevState.slice(
-        0,
-        prevState.findIndex((p) => p.id == idNumber),
-      ),
-      ...prevState.slice(prevState.findIndex((p) => p.id == idNumber) + 1),
-    ]);
-  };
-
-  const handleUpdateThings = (thing: TodoItem) => {
-    const updatedThings = tasks.map((item) =>
-      item.id === thing.id ? { ...item, completed: !item.completed } : item,
-    );
+  const handleUpdateThings = (updatedThings: Todoes) => {
     setTasks(updatedThings);
   };
 
   useFetchTodoes(() => {
     const fetchData = async () => {
-      const result = await fetch("https://dummyjson.com/todos", {
+      const result = await fetch("https://jsonplaceholder.typicode.com/todos", {
         method: "GET",
       });
       const jsonResult = await result.json();
-      for (let i of jsonResult.todos) {
+      for (let i of jsonResult) {
         const item: TodoItem = {
           id: uuidv4(),
-          title: i.todo,
+          title: i.title,
           description: "",
           completed: i.completed,
         };
@@ -73,7 +60,6 @@ function App() {
 
       <Todolist
         things={tasks}
-        onDeleteTask={handleDeleteTask}
         onAddTask={handleAddTask}
         onUpdateThings={handleUpdateThings}
       />

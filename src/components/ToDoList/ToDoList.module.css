@@ -9,6 +9,14 @@
   justify-content: center;
 }
 
+.ul:hover {
+  transform: scale(1.005);
+}
+
+.ul.fadeOut {
+  opacity: 0;
+}
+
 .taskCompleted {
   border: 3px outset green;
   border-radius: 10px;

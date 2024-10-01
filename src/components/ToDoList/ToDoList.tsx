@@ -15,39 +15,48 @@ import { v4 as uuidv4 } from "uuid";
 
 type TodoListProps = {
   things: Todoes;
-  onDeleteTask: (id: string) => void;
   onAddTask: (
     id: string,
     title: string,
     description: string,
     completed: boolean,
   ) => void;
-  onUpdateThings: (thing: TodoItem) => void;
+  onUpdateThings: (things: Todoes) => void;
 };
 
-const Todolist: FC<TodoListProps> = ({
-  things,
-  onDeleteTask,
-  onAddTask,
-  onUpdateThings,
-}) => {
+const Todolist: FC<TodoListProps> = ({ things, onAddTask, onUpdateThings }) => {
   const [todoItems, setTodoItems] = useState<Todoes>(things);
 
   useEffect(() => {
     setTodoItems(things);
   }, [things]);
 
+  const [fadeOutId, setFadeOutId] = useState<string | null>(null);
+
   const handleClick = (id: string) => {
-    onDeleteTask(id);
+    const updatedTodoes = todoItems.filter((item) =>
+      item.id != id ? item : null,
+    );
+
+    setFadeOutId(id);
+
+    setTimeout(() => {
+      setTodoItems(updatedTodoes);
+
+      onUpdateThings(updatedTodoes);
+
+      setFadeOutId(null);
+    }, 200);
   };
 
-  const handleCheckbox = (thing: TodoItem) => {
-    const updatedThings = todoItems.map((item) =>
-      item.id === thing.id ? { ...item, completed: !item.completed } : item,
+  const handleCheckbox = (id: string) => {
+    const updatedTodoes = todoItems.map((item) =>
+      item.id === id ? { ...item, completed: !item.completed } : item,
     );
-    setTodoItems(updatedThings);
 
-    onUpdateThings(thing);
+    setTodoItems(updatedTodoes);
+
+    onUpdateThings(updatedTodoes);
   };
 
   return (
@@ -58,6 +67,7 @@ const Todolist: FC<TodoListProps> = ({
           className={[
             thing.completed ? styles.taskCompleted : styles.taskUncompleted,
             styles.ul,
+            fadeOutId == thing.id ? styles.fadeOut : "",
           ].join(" ")}
           secondaryAction={
             <IconButton edge="end" aria-label="delete">
@@ -66,7 +76,7 @@ const Todolist: FC<TodoListProps> = ({
           }
         >
           <Checkbox
-            onClick={() => handleCheckbox(thing)}
+            onClick={() => handleCheckbox(thing.id)}
             checked={thing.completed}
           />
           <ListItemText
