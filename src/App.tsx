@@ -6,9 +6,12 @@ import { v4 as uuidv4 } from "uuid";
 import { TodoItem, Todoes } from "./types/todoes";
 import todoes from "./constants/todoes";
 import useFetchTodoes from "./hooks/fetchTodoes";
+import { useDispatch, useSelector } from "react-redux";
 
 function App() {
-  const [tasks, setTasks] = useState<Todoes>(todoes);
+
+  const dispatch = useDispatch();
+  const todoItems = useSelector((state:{todoes:Todoes}) => state.todoes);
 
   const handleAddTask = (
     id: string,
@@ -23,11 +26,7 @@ function App() {
       completed,
     };
 
-    setTasks((prevState) => [...prevState, newItem]);
-  };
-
-  const handleUpdateTasks = (updatedThings: Todoes) => {
-    setTasks(updatedThings);
+    dispatch({type: "ADD_TODO", payload: newItem})
   };
 
   useFetchTodoes(() => {
@@ -58,11 +57,7 @@ function App() {
       </header>
       <AddingForm onAddTask={handleAddTask} />
 
-      <Todolist
-        things={tasks}
-        onAddTask={handleAddTask}
-        onUpdateTasks={handleUpdateTasks}
-      />
+      <Todolist/>
     </>
   );
 }
