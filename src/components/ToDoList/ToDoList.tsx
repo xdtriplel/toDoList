@@ -12,33 +12,51 @@ import Checkbox from "@mui/material/Checkbox";
 import styles from "./ToDoList.module.css";
 import useFetchTodoes from "../../hooks/fetchTodoes";
 import { v4 as uuidv4 } from "uuid";
-import { useDispatch, useSelector } from "react-redux";
 
+type TodoListProps = {
+  things: Todoes;
+  onAddTask: (
+    id: string,
+    title: string,
+    description: string,
+    completed: boolean,
+  ) => void;
+  onUpdateTasks: (things: Todoes) => void;
+};
 
+const Todolist: FC<TodoListProps> = ({ things, onAddTask, onUpdateTasks }) => {
+  const [todoItems, setTodoItems] = useState<Todoes>(things);
 
-const Todolist: FC<{}> = () => {
-
-  const dispatch = useDispatch();
-  const todoItems = useSelector((state:{todoes:Todoes}) => state.todoes);
+  useEffect(() => {
+    setTodoItems(things);
+  }, [things]);
 
   const [fadeOutId, setFadeOutId] = useState<string | null>(null);
 
-  const handleClick = (todo: TodoItem) => {
+  const handleClick = (id: string) => {
+    const updatedTodoes = todoItems.filter((item) =>
+      item.id != id ? item : null,
+    );
 
-    setFadeOutId(todo.id);
+    setFadeOutId(id);
 
     setTimeout(() => {
-      
-      dispatch({type: "DELETE_TODO", payload: todo});
-      
+      setTodoItems(updatedTodoes);
+
+      onUpdateTasks(updatedTodoes);
+
       setFadeOutId(null);
     }, 200);
   };
 
-  const handleCheckbox = (todo: TodoItem) => {
-  
-    dispatch({type: "UPDATE_TODOES", payload:todo});
+  const handleCheckbox = (id: string) => {
+    const updatedTodoes = todoItems.map((item) =>
+      item.id === id ? { ...item, completed: !item.completed } : item,
+    );
 
+    setTodoItems(updatedTodoes);
+
+    onUpdateTasks(updatedTodoes);
   };
 
   return (
@@ -53,12 +71,12 @@ const Todolist: FC<{}> = () => {
           ].join(" ")}
           secondaryAction={
             <IconButton edge="end" aria-label="delete">
-              <DeleteIcon onClick={() => handleClick(thing)} />
+              <DeleteIcon onClick={() => handleClick(thing.id)} />
             </IconButton>
           }
         >
           <Checkbox
-            onClick={() => handleCheckbox(thing)}
+            onClick={() => handleCheckbox(thing.id)}
             checked={thing.completed}
           />
           <ListItemText
