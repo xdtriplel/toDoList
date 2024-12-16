@@ -2,7 +2,7 @@ import { TodoItem, Todoes } from "../types/todoes"
 
 
 const defaulftState:{todoes: Todoes} = {
-    todoes: []
+    todoes: JSON.parse(localStorage.getItem('todoItems') as string) || []
 }
 
 export const reducer = (state = defaulftState, action: {type: string, payload: TodoItem}) => {

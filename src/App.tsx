@@ -13,6 +13,10 @@ function App() {
   const dispatch = useDispatch();
   const todoItems = useSelector((state:{todoes:Todoes}) => state.todoes);
 
+  useEffect(() => {
+    localStorage.setItem('todoItems', JSON.stringify(todoItems));
+  }, [todoItems])
+
   const handleAddTask = (
     id: string,
     title: string,
@@ -28,27 +32,6 @@ function App() {
 
     dispatch({type: "ADD_TODO", payload: newItem})
   };
-
-  useFetchTodoes(() => {
-    const fetchData = async () => {
-      const result = await fetch("https://jsonplaceholder.typicode.com/todos", {
-        method: "GET",
-      });
-      const jsonResult = await result.json();
-      for (let i of jsonResult) {
-        const item: TodoItem = {
-          id: uuidv4(),
-          title: i.title,
-          description: "",
-          completed: i.completed,
-        };
-
-        handleAddTask(item.id, item.title, item.description, item.completed);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   return (
     <>
