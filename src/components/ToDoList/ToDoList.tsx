@@ -13,32 +13,30 @@ import styles from "./ToDoList.module.css";
 import useFetchTodoes from "../../hooks/fetchTodoes";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
-
-
+import { deleteItemdb } from "../../functions/deleteItemdb";
+import { changeStatusdb } from "../../functions/changeStatusdb";
 
 const Todolist: FC<{}> = () => {
-
   const dispatch = useDispatch();
-  const todoItems = useSelector((state:{todoes:Todoes}) => state.todoes);
+  const todoItems = useSelector((state: { todoes: Todoes }) => state.todoes);
 
   const [fadeOutId, setFadeOutId] = useState<string | null>(null);
 
   const handleClick = (todo: TodoItem) => {
-
     setFadeOutId(todo.id);
 
+    deleteItemdb(todo.id);
+
     setTimeout(() => {
-      
-      dispatch({type: "DELETE_TODO", payload: todo});
-      
+      dispatch({ type: "DELETE_TODO", payload: todo });
+
       setFadeOutId(null);
     }, 200);
   };
 
   const handleCheckbox = (todo: TodoItem) => {
-  
-    dispatch({type: "UPDATE_TODOES", payload:todo});
-
+    changeStatusdb(todo);
+    dispatch({ type: "UPDATE_TODOES", payload: todo });
   };
 
   return (

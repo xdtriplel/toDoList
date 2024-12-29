@@ -12,8 +12,7 @@ const root = createRoot(container);
 const store = createStore(reducer);
 
 root.render(
-    <Provider store={store}>
-        <App />
-    </Provider>
-
+  <Provider store={store}>
+    <App />
+  </Provider>,
 );
